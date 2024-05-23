@@ -74,6 +74,11 @@ const gameController = (() => {
 				isGameOver = true;
 			} else {
 				switchPlayer();
+				displayController.updateResult(
+					`${getCurrentPlayer().name}'s turn. Marker: ${
+						getCurrentPlayer().marker
+					}`
+				);
 			}
 			console.log(gameBoard.getBoard());
 			displayController.renderBoard(gameBoard.getBoard());
