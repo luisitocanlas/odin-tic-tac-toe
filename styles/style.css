@@ -2,9 +2,23 @@
 
 .game-container {
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	height: 100vh;
+}
+
+.controls {
+	margin-bottom: 20px;
+}
+
+.controls input {
+	margin-right: 10px;
+	padding: 5px;
+}
+
+.controls button {
+	padding: 5px 10px;
 }
 
 .game-board {
@@ -12,6 +26,7 @@
 	grid-template-columns: repeat(3, 100px);
 	grid-template-rows: repeat(3, 100px);
 	gap: 5px;
+	margin-bottom: 20px;
 }
 
 .cell {
@@ -22,4 +37,9 @@
 	border: 1px solid #000;
 	cursor: pointer;
 	user-select: none;
+}
+
+.game-result {
+	font-size: 1.5rem;
+	font-weight: bold;
 }
