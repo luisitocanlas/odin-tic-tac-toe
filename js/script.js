@@ -38,12 +38,15 @@ const gameController = (() => {
 	let currentPlayerIndex = 0;
 	let isGameOver = false;
 
+	// start a new game
 	const startGame = (player1Name, player2Name) => {
 		players = [Player(player1Name, 'X'), Player(player2Name, 'O')];
 
 		currentPlayerIndex = 0;
 		isGameOver = false;
 		gameBoard.resetBoard();
+		displayController.renderBoard(gameBoard.getBoard());
+		console.log('Game started!');
 	};
 
 	const getCurrentPlayer = () => players[currentPlayerIndex];
@@ -52,6 +55,7 @@ const gameController = (() => {
 		currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
 	};
 
+	// what happens when a player plays a turn
 	const playTurn = (row, column) => {
 		if (
 			!isGameOver &&
@@ -66,8 +70,11 @@ const gameController = (() => {
 			} else {
 				switchPlayer();
 			}
+			console.log(gameBoard.getBoard());
+			displayController.renderBoard(gameBoard.getBoard());
+		} else {
+			console.log('Invalid move. Try again.');
 		}
-		console.log(gameBoard.getBoard());
 	};
 
 	const checkWin = () => {
@@ -124,3 +131,31 @@ function checkBoard(board) {
 
 	return undefined;
 }
+
+// updates the webpage when playing
+const displayController = (() => {
+	const gameBoardElement = document.querySelector('.game-board');
+
+	const renderBoard = (board) => {
+		// reset the board
+		gameBoardElement.innerHTML = '';
+
+		// generate the new board
+		board.forEach((row, rowIndex) => {
+			row.forEach((cell, colIndex) => {
+				const cellElement = document.createElement('div');
+				cellElement.classList.add('cell');
+				cellElement.textContent = cell;
+
+				// add event listener for user action
+				cellElement.addEventListener('click', () => {
+					gameController.playTurn(rowIndex, colIndex);
+				});
+
+				gameBoardElement.appendChild(cellElement);
+			});
+		});
+	};
+
+	return { renderBoard };
+})();
