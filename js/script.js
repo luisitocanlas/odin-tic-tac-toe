@@ -46,6 +46,7 @@ const gameController = (() => {
 		isGameOver = false;
 		gameBoard.resetBoard();
 		displayController.renderBoard(gameBoard.getBoard());
+		displayController.updateResult('Game started!');
 		console.log('Game started!');
 	};
 
@@ -62,10 +63,14 @@ const gameController = (() => {
 			gameBoard.updateBoard(row, column, getCurrentPlayer().marker)
 		) {
 			if (checkWin()) {
-				console.log(`${getCurrentPlayer().name} wins!`);
+				const winnerMessage = `${getCurrentPlayer().name} wins!`;
+				displayController.updateResult(winnerMessage);
+				console.log(winnerMessage);
 				isGameOver = true;
 			} else if (checkDraw()) {
-				console.log(`It's a draw!`);
+				const drawMessage = `It's a draw!`;
+				displayController.updateResult(drawMessage);
+				console.log(drawMessage);
 				isGameOver = true;
 			} else {
 				switchPlayer();
@@ -135,6 +140,7 @@ function checkBoard(board) {
 // updates the webpage when playing
 const displayController = (() => {
 	const gameBoardElement = document.querySelector('.game-board');
+	const resultElement = document.querySelector('.game-result');
 
 	const renderBoard = (board) => {
 		// reset the board
@@ -157,5 +163,18 @@ const displayController = (() => {
 		});
 	};
 
-	return { renderBoard };
+	const updateResult = (message) => {
+		resultElement.textContent = message;
+	};
+
+	return { renderBoard, updateResult };
 })();
+
+// Start game event listener
+document.querySelector('.start-button').addEventListener('click', () => {
+	const player1Name =
+		document.querySelector('.player1-name').value || 'Player 1';
+	const player2Name =
+		document.querySelector('.player2-name').value || 'Player 2';
+	gameController.startGame(player1Name, player2Name);
+});
